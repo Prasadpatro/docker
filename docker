@@ -1,0 +1,131 @@
+---------Docker image-----------
+
+it is the actual page
+it can be moved around
+not running
+
+
+
+
+
+---------Docker container----------
+
+
+
+actually, start the appliaction
+container environment is created
+running environment for an image
+it has virtual file system
+
+==========================================================================================================================
+
+docker compose is used to run multiple containers at a time
+-d detach(run in background)
+-p port(host port:container port)
+-i interactive
+-a all
+-t redirecting to terminal
+--name to rename the container  docker run -d --name redis-older container-name
+exec -it container-id /bin/bash   ---to get the terminal of the container
+
+docker inspect-----will give the full info about container/images
+
+
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=1 -d mysql
+docker exec -it 4483895c2360 /bin/bash
+mysql -u root -p
+
+
+to build a dockerfile------- docker build -t dockerfile .
+
+
+
+==============Advantages of docker=======================
+containers are immutable
+containers are fast
+containers are lightweight
+
+
+
+============Disadvantages of Docker============
+
+Don't store data in containers
+dont ship applications into pieces
+dont user latest tag...(sometimes the version may override the config file if its already exist)
+dont create large images
+dont use single layer image
+dont use more than one process in a single container
+dont run process as  a root user
+dont rely on ip address(it will change whenever we stop and run)
+dont create images from running containers
+dont store credentials in the image, uses environment variables
+
+
+
+
+docker run --name postgres -e POSTGRES_PASSWORD=1 -d postgres
+psql -U postgres
+docker run --name postgres -e POSTGRES_PASSWORD=1 -v pgdata:/var/lib/postgresql/data -d postgres
+
+attaching a volume to running container
+docker run --name postgres -e POSTGRES_PASSWORD=1 -v pgdata:/shared_volume -d postgres
+
+ Create an Image From a Container
+ ------docker commit container
+ 
+ 
+ 
+ docker login artifactorycn.netcracker.com:17017
+ 
+ ===in vm server===
+ 
+  run --name postgres -e POSTGRES_PASSWORD=1 -d postgres
+  docker run --name postgres32 -e POSTGRES_PASSWORD=1 -d postgres
+  docker ps
+  docker tag 680aba37fd0f artifactorycn.netcracker.com:17017/prpo0922/postgres:15.2
+  docker images
+  docker push artifactorycn.netcracker.com:17017/prpo0922/postgres:15.2
+  
+  ===in private server===
+	docker pull artifactorycn.netcracker.com:17017/prpo0922/postgres:15.2
+	
+	
+	
+	
+	
+======	to check docker container resource usage(docker ram and cpu extension)
+	
+	docker stats --all
+	
+	----
+	docker run -it --memory ="[memory limit]" [docker image]
+	docker run -it --memory="1g" centos
+	
+	----
+	set swap to disk memory limit ----docker run -it --memory ="[memory limit]" --memory-swap="[memory limit]" [docker image]
+	docker run -it --memory="1g" --memory-swap="2g" centos
+	
+	----
+	limit the cpu usage----docker run -it --cpus="1.0" [docker image]
+	docker run -it --cpus-shares="700m" centos
+	
+	----
+	to set the soft limit ----docker run -it --memory ="1g" --memory-reservation="750m"[docker image]
+
+
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' web
+
+
+
+
+
+docker run -d -v todo-mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=1 -e MYSQL_DATABASE=todos mysql:8.0
+
+
+
+
+======LIMITATIONS=====
+
+---dynamic ip address
+---communication between 2 docker containers running on 2 diff hosts is not possible
+---
