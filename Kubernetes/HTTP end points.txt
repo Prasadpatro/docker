@@ -1,0 +1,28 @@
+what is endpoint?
+
+1-->When you create a Service in Kubernetes, it automatically creates an associated set of endpoints.
+2-->These endpoints are dynamically managed by Kubernetes and are updated as pods are created, deleted, or scaled.
+3-->Endpoints are typically represented as a combination of an IP address and a port number. 
+
+       For example, an endpoint could be something like 10.0.0.1:8080, 
+	       where 10.0.0.1 is the IP address and 8080 is the port number. 
+4-->Clients can use these endpoints to connect to the service or to load balance traffic across multiple pods backing the service.
+
+Overall, endpoints in Kubernetes provide a convenient and abstract way to access and communicate with services running in the cluster, regardless of the specific pods that make up those services.
+
+
+how pod can communicate external website?  
+
+Outbound Internet access: pods can make outgoing network connections to external websites using standard networking protocols like HTTP, HTTPS, TCP, etc.
+
+DNS resolution: When a pod attempts to communicate with an external website using its domain name, the DNS resolution process translates the domain name to an IP address that the pod can connect to.
+
+Service Type: If you want multiple pods to communicate with an external website, you can create a Kubernetes Service of type ExternalName. This type of service acts as a proxy to an external endpoint by providing a stable DNS name that resolves to the external website's address. Pods within the cluster can then communicate with the external website using the DNS name associated with the service.
+
+Networking Plugins: Kubernetes supports different networking plugins and solutions, such as Calico, Flannel, and Weave, which provide network connectivity and enable pod-to-external-website communication. The specific configuration and setup may depend on the networking solution you are using in your Kubernetes cluster.
+
+how networking work from pod to external website?
+
+Pod IP and routing: Each pod in Kubernetes is assigned a unique IP address within the cluster's network. When a pod initiates a connection to an external website, it sends the network traffic through its assigned IP address.
+
+Network Address Translation (NAT): The pod's IP traffic is typically subjected to Network Address Translation (NAT) as it exits the cluster. NAT ensures that the source IP address of the pod is rewritten to match the cluster's public-facing IP address, hiding the pod's internal IP from the external network.
